@@ -34,7 +34,7 @@ export default {
       this.user = this.$refs.form.user;
       try {
         this.saveUser({
-          name: this.user.nome,
+          name: this.user.name,
           email: this.user.email,
           pass: md5(this.user.pass),
         });
