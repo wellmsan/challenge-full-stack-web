@@ -1,0 +1,99 @@
+image: docker:$DOCKER_VERSION
+  
+variables:
+  GIT_SSL_NO_VERIFY: "true"
+  
+stages:
+  - qa_scanner
+  - qa_validation
+  - build
+  - deploy
+  - tag
+
+# Quality Assurance - Begin
+# Only branch develop 
+SonarScanner:
+  image: ciricihq/gitlab-sonar-scanner
+  stage: qa_scanner
+  only:
+   - develop
+  variables:
+   SONAR_URL: http://sonar.gerinf.uneb.br
+   SONAR_ANALYSIS_MODE: publish
+  script:
+   - gitlab-sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.projectKey=$PROJECT_NAME -Dsonar.sonar.login=$SONAR_LOGIN -Dsonar.gitlab.user_token=$TOKEN_GITLAB -Dsonar.gitlab.project_id=${CI_PROJECT_PATH} -Dsonar.gitlab.commit_sha=${CI_COMMIT_SHA}
+   - sleep 20s
+ 
+CodeValidation:
+  stage: qa_validation
+  dependencies:
+   - SonarScanner
+  only:
+   - develop
+  script:
+   - apk update && apk add curl curl-dev && apk add jq
+   - curl -o qualityGate.json http://sonar.gerinf.uneb.br/api/qualitygates/project_status?projectKey=$PROJECT_NAME
+   - export qualityGate=$(cat qualityGate.json | jq '.projectStatus.status')
+   - if ["$qualityGate" != "OK"]; then exit 1; else exit 0; fi
+# Quality Assurance - End
+ 
+BuildStaging:
+  stage: build
+  environment:
+    name: homologacao
+    url: api.homologacao.uneb.br
+  only:
+    - staging
+  script:
+    - docker build --no-cache -t ${PROJECT_NAME} .
+    
+DeployStaging:
+  stage: deploy
+  dependencies:
+   - BuildStaging
+  environment:
+    name: homologacao
+    url: api.homologacao.uneb.br
+  only:
+    - staging
+  script:
+    - docker stack deploy -c docker-compose.yml ${CI_ENVIRONMENT_NAME}
+#    - docker service update --force --image ${PROJECT_NAME}:latest ${CI_ENVIRONMENT_NAME}_${PROJECT_NAME}
+
+BuildProd:
+  stage: build
+  environment:
+    name: production
+    url: api.uneb.br
+  only:
+    - master
+  script:
+    - docker build --no-cache -t ${PROJECT_NAME} .
+    
+DeployProd:
+  stage: deploy
+  dependencies:
+   - BuildProd
+  environment:
+    name: production
+    url: api.uneb.br
+  only:
+    - master
+  script:
+    - docker stack deploy -c docker-compose.yml ${CI_ENVIRONMENT_NAME}
+#    - docker service update --force --image ${PROJECT_NAME}:latest ${CI_ENVIRONMENT_NAME}_${PROJECT_NAME}
+
+semantic_release:
+  stage: tag
+  dependencies:
+   - DeployProd
+  image: node:8
+  variables:
+    GITLAB_TOKEN: $TOKEN_GITLAB
+    GITLAB_URL: $URL_GITLAB
+  before_script:
+    - npm install semantic-release @semantic-release/gitlab -D
+  script:
+    - npm run semantic-release
+  only:
+    - master
