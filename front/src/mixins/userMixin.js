@@ -50,7 +50,15 @@ var userMixin = {
         },
     },
 
+    created() {
+        this.getUserByFilter({})
+    },
+
     methods: {
+        getUserByFilter(params) {
+            store.dispatch('User/loadAll', params)
+        },
+
         getUserById(id) {
             store.dispatch('User/get', id)
         },

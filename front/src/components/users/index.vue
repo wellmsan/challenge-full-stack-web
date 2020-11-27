@@ -32,7 +32,19 @@ export default {
     users: [],
   }),
 
+  created() {
+    this.onLoadAll();
+  },
+
   methods: {
+    onLoadAll() {
+      for (const user of this.getAllUsers.rows) {
+        this.users.push({
+          nome: user.name,
+          email: user.email,
+        });
+      }
+    },
     onCreate() {
       this.$router.push("users/add");
     },

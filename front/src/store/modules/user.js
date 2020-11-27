@@ -23,9 +23,9 @@ const actions = {
         commit('RESET');
     },
 
-    loadAll({ commit }) {
+    loadAll({ commit }, params) {
         return new Promise((resolve, reject) => {
-            api.get(endPoint).then(async (res) => {
+            api.get(endPoint, params).then(async (res) => {
                 if (res.status == 200) {
                     commit('SET_USERS', await res)
                     resolve()
