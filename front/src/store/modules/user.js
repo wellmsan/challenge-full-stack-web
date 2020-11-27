@@ -27,7 +27,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.get(endPoint).then(async (res) => {
                 if (res.status == 200) {
-                    commit('SET_DATA', await res)
+                    commit('SET_USERS', await res)
                     resolve()
                 } else {
                     reject()
@@ -43,7 +43,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.get(endPoint + '/' + id).then(async (res) => {
                 if (res.status == 200) {
-                    commit('SET_OBJECT', await res)
+                    commit('SET_USER', await res)
                     resolve()
                 } else {
                     reject()
@@ -59,7 +59,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.post(endPoint, body).then(async (res) => {
                 if (res.status == 201) {
-                    commit('SET_OBJECT', await res.data)
+                    commit('SET_USER', await res.data)
                     resolve()
                 } else {
                     reject()
@@ -75,7 +75,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.put(endPoint + '/' + id, body).then(async (res) => {
                 if (res.status == 201) {
-                    commit('SET_OBJECT', await res.data)
+                    commit('SET_USER', await res.data)
                     resolve()
                 } else {
                     reject()
