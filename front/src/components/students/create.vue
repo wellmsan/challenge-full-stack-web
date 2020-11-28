@@ -4,7 +4,7 @@
     v-on:reset="onClean"
     v-on:goBack="goBack"
   >
-    <formStudent ref="form"></formStudent>
+    <formStudent ref="formStudent"></formStudent>
   </templateCreate>
 </template>
 <script>

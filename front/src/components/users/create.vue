@@ -4,7 +4,7 @@
     v-on:reset="onClean"
     v-on:goBack="goBack"
   >
-    <formUser ref="form"></formUser>
+    <formUser ref="formUser"></formUser>
   </templateCreate>
 </template>
 <script>
@@ -28,8 +28,7 @@ export default {
       this.resetUser();
     },
     onSave() {
-      this.saveUser();
-      this.$router.push("/users");
+      if (this.saveUser() != null) this.$router.push("/users");
     },
   },
 };

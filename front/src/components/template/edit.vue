@@ -7,7 +7,7 @@
         <v-icon>mdi-arrow-left-bold</v-icon>
       </v-btn>
     </v-card-title>
-    <v-form ref="form" lazy-validation>
+    <v-form @submit.prevent lazy-validation>
       <slot></slot>
     </v-form>
     <v-card-actions class="pt-0">

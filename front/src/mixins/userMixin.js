@@ -81,7 +81,7 @@ var userMixin = {
         async saveUser() {
             let loader = this.$loading.show();
             try {
-                this.user = this.$refs.form.user;
+                this.user = this.$refs.formUser.user;
                 await store.dispatch('User/save', {
                     name: this.user.name,
                     email: this.user.email,
@@ -106,7 +106,7 @@ var userMixin = {
         async updateUser() {
             let loader = this.$loading.show();
             try {
-                this.user = this.$refs.form.user;
+                this.user = this.$refs.formUser.user;
                 await store.dispatch('User/update', this.user.id, {
                     name: this.user.name,
                     email: this.user.email,

@@ -1,80 +1,80 @@
 import api from '../../config/api'
+const endPoint = '/students'
+
+const getInitialSate = () => {
+  return {
+    data: [],
+    object: null
+  }
+}
 
 // initial state
-let state = {
-  token: '',
-  username: '',
-  userId: '',
-  isAuth: false,
-}
+let state = getInitialSate()
 
 // getters
 const getters = {
-  token: state => state.token,
-  username: state => state.username,
-  userId: state => state.userId,
-  isAuth: state => state.isAuth
+  object: state => state.object,
+  data: (state) => { return state.data }
 }
 
 // actions
 const actions = {
-  login({ commit }, params) {
-    return new Promise((resolve, reject) => {
-      params.client_id = process.env.VUE_APP_API_KEY
-      // params.password = Buffer.from(params.password, 'utf16le')            
-      api.post('/login', params).then(res => {
-        api.post('/decode', { token: res.data.token, client_id: params.client_id }).then(decode => {
-          res.data.payload = decode.data
-          commit('login', res.data)
-          resolve(res)
-        })
-      }).catch(e => {
-        reject(e)
-      })
-    })
+  reset({ commit }) {
+    commit('RESET');
   },
-  logout({ commit }) {
-    return new Promise((resolve, reject) => {
-      try {
-        commit('logout')
-      } catch (e) {
-        reject(e)
-      }
 
-    })
+  async loadAll({ commit }, params) {
+    const res = await api.get(endPoint, params)
+    commit('SET_DATA', res.data.rows)
   },
-  check({ commit }, params) {
-    return new Promise((resolve, reject) => {
-      params.client_id = process.env.VUE_APP_API_KEY
-      api.post('check', params).then(res => {
-        if (!res.data.auth) {
-          commit('logout')
-          reject()
-        } else {
-          resolve(res)
-        }
-      }).catch(e => {
-        commit('logout')
-        reject(e)
-      })
-    })
+
+  async get({ commit }, id) {
+    const res = await api.get(endPoint + '/' + id)
+    commit('SET_OBJECT', res.data)
+  },
+
+  async save({ commit }, body) {
+    const res = await api.post(endPoint, body)
+    commit('ADD_OBJECT', res.data)
+  },
+
+  async update({ commit }, id, body) {
+    const res = await api.put(endPoint + '/' + id, body)
+    commit('SET_OBJECT', res.data)
+  },
+
+  async delete({ commit }, id) {
+    await api.delete(endPoint + '/' + id)
+    commit('DEL_OBJECT', id)
   }
 }
 
 // mutations
 const mutations = {
-  login(state, data) {
-    state.token = data.token
-    state.isAuth = data.auth
-    state.username = data.username
-    state.userId = data.userId
+  RESET(state) {
+    const newState = getInitialSate();
+    Object.keys(newState).forEach(key => {
+      state[key] = newState[key]
+    });
   },
-  logout(state) {
-    state.token = ''
-    state.isAuth = false
-    state.username = ''
-    state.userId = ''
-    localStorage.removeItem(process.env.VUE_APP_PROJECT_NAME)
+
+  SET_OBJECT(state, object) {
+    state.object = object
+  },
+
+  SET_DATA(state, data) {
+    state.data = data
+  },
+
+  ADD_OBJECT(state, { data }) {
+    let list = [...state.data, data]
+    state.data = list
+    // Vue.set(state, data, [...data])
+  },
+
+  DEL_OBJECT(state, id) {
+    const index = state.data.findIndex(obj => obj.id == id)
+    state.data.splice(index, 1)
   }
 }
 

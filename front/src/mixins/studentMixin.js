@@ -8,24 +8,27 @@ var studentMixin = {
     data: () => ({
         student: {
             id: null,
-            nome: '',
+            name: '',
             email: '',
-            registroAcademico: '',
+            academic_record: '',
             cpf: '',
             rules: {
-                nome: [
-                    v => !!v || 'Nome é obrigatrio!',
+                name: [
+                    v => !!v || 'Name é obrigatrio!',
                     v => (v && v.length >= 10) || 'Nome precisa ter mais de 10 caracteres!',
+                    v => (v && v.length <= 50) || 'O Tamanho máximo é de 50 Caracteres',
                 ],
                 email: [
                     v => !!v || 'E-mail é obrigatrio!',
                     v => /.+@.+\..+/.test(v) || 'E-mail deve ser válido!',
                 ],
-                registroAcademico: [
+                academic_record: [
                     v => !!v || 'Registro Acadêmico é obrigatrio!',
+                    v => (v && v.length <= 10) || 'O Tamanho máximo é de 10 Caracteres',
                 ],
                 cpf: [
                     v => !!v || 'CPF é obrigatrio!',
+                    v => (v && v.length == 14) || 'O Tamanho é de 14 Caracteres',
                 ],
             }
         },
@@ -61,16 +64,19 @@ var studentMixin = {
             let loader = this.$loading.show();
             try {
                 await store.dispatch('Student/get', id)
+                /*
                 this.student = {
                     id: this.getStudent.id,
-                    nome: this.getStudent.name,
+                    name: this.getStudent.name,
                     email: this.getStudent.email,
-                    registroAcademico: this.getStudent.academic_record,
+                    academic_record: this.getStudent.academic_record,
                     cpf: this.getStudent.cpf,
                 }
+                */
                 setTimeout(function () {
                     loader.hide();
                 }, 1000);
+                return await this.getStudent
             } catch (e) {
                 loader.hide();
                 bus.$emit("error", {
@@ -83,11 +89,11 @@ var studentMixin = {
         async saveStudent() {
             let loader = this.$loading.show();
             try {
-                this.student = this.$refs.form.student;
+                this.student = this.$refs.formStudent.student;
                 await store.dispatch('Student/save', {
-                    name: this.student.nome,
+                    name: this.student.name,
                     email: this.student.email,
-                    academic_record: this.student.registroAcademico,
+                    academic_record: this.student.academic_record,
                     cpf: this.student.cpf,
                 })
                 await this.getStudentByFilter({});
@@ -109,11 +115,11 @@ var studentMixin = {
         async updateStudent() {
             let loader = this.$loading.show();
             try {
-                this.student = this.$refs.form.student;
+                this.student = this.$refs.formStudent.student;
                 await store.dispatch('Student/update', this.student.id, {
-                    name: this.student.nome,
+                    name: this.student.name,
                     email: this.student.email,
-                    academic_record: this.student.registroAcademico,
+                    academic_record: this.student.academic_record,
                     cpf: this.student.cpf,
                 })
                 await this.getStudentByFilter({});

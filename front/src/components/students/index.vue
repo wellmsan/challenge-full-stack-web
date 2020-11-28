@@ -26,9 +26,9 @@ export default {
         text: "Registro Acadêmico",
         align: "start",
         sortable: false,
-        value: "registroAcademico",
+        value: "academic_record",
       },
-      { text: "Nome", value: "nome" },
+      { text: "Nome", value: "name" },
       { text: "E-mail", value: "email" },
       { text: "CPF", value: "cpf" },
       { text: "Ações", value: "actions", sortable: false },
@@ -42,10 +42,10 @@ export default {
       for (const student of this.getAllStudents) {
         this.dataItems.push({
           id: student.id,
-          nome: student.name,
+          name: student.name,
           email: student.email,
           cpf: student.cpf,
-          registroAcademico: student.academic_record,
+          academic_record: student.academic_record,
         });
       }
     },

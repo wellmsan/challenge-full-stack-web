@@ -42,9 +42,7 @@ export default {
   data: () => ({}),
 
   created() {
-    if (this.id != undefined) {
-      this.getUserById(this.id);
-    }
+    if (this.id != undefined) this.getUserById(this.id);
   },
 };
 </script>

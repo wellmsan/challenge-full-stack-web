@@ -4,7 +4,7 @@
     v-on:reset="onClean"
     v-on:goBack="goBack"
   >
-    <formStudent :id="getId" />
+    <formStudent ref="formStudent" :id="getId" />
   </templateEdit>
 </template>
 <script>
@@ -40,8 +40,7 @@ export default {
       this.resetStudent();
     },
     onUpdate() {
-      this.updateStudent();
-      this.$router.push("/students");
+      if (this.updateStudent() != null) this.$router.push("/students");
     },
   },
 };

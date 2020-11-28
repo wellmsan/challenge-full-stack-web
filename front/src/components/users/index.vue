@@ -51,7 +51,6 @@ export default {
       this.$router.push("users/" + id);
     },
     onDelete(id) {
-      console.log(id);
       this.deleteUser(id);
     },
   },
