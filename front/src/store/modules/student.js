@@ -67,9 +67,10 @@ const mutations = {
     },
 
     ADD_OBJECT(state, { data }) {
-        let list = [...state.data, data]
-        state.data = list
+        // let list = [...state.data, data]
+        // state.data = list
         // Vue.set(state, data, [...data])
+        state.data.push(data)
     },
 
     DEL_OBJECT(state, id) {

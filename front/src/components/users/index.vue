@@ -1,7 +1,7 @@
 <template>
   <templateList
     :headers="headers"
-    :items="dataItems"
+    :items="getAllUsers"
     :itemsPerPage="10"
     v-on:loadDataItem="onLoadAll"
     v-on:create="onCreate"
@@ -25,24 +25,16 @@ export default {
       {
         text: "Nome",
         align: "start",
-        value: "nome",
+        value: "name",
       },
       { text: "E-mail", sortable: false, value: "email" },
       { text: "Ações", value: "actions", sortable: false },
     ],
-    dataItems: [],
   }),
 
   methods: {
     onLoadAll() {
       this.getUserByFilter({});
-      for (const user of this.getAllUsers) {
-        this.dataItems.push({
-          id: user.id,
-          nome: user.name,
-          email: user.email,
-        });
-      }
     },
     onCreate() {
       this.$router.push("users/add");

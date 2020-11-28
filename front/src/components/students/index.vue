@@ -1,7 +1,7 @@
 <template>
   <templateList
     :headers="headers"
-    :items="dataItems"
+    :items="getAllStudents"
     :itemsPerPage="10"
     v-on:loadDataItem="onLoadAll"
     v-on:create="onCreate"
@@ -33,21 +33,11 @@ export default {
       { text: "CPF", value: "cpf" },
       { text: "Ações", value: "actions", sortable: false },
     ],
-    dataItems: [],
   }),
 
   methods: {
     onLoadAll() {
       this.getStudentByFilter({});
-      for (const student of this.getAllStudents) {
-        this.dataItems.push({
-          id: student.id,
-          name: student.name,
-          email: student.email,
-          cpf: student.cpf,
-          academic_record: student.academic_record,
-        });
-      }
     },
     onCreate() {
       this.$router.push("students/add");

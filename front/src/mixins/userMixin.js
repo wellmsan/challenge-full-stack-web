@@ -35,7 +35,7 @@ var userMixin = {
         },
         getAllUsers() {
             return store.state['User'].data
-        },
+        }
     },
 
     methods: {
@@ -51,7 +51,7 @@ var userMixin = {
                 bus.$emit("error", {
                     message: "Ops! Falha ao carregar dados " + e.message,
                 });
-                return
+                return null
             }
         },
 
@@ -59,7 +59,6 @@ var userMixin = {
             let loader = this.$loading.show();
             try {
                 await store.dispatch('User/get', id)
-                console.log(this.getUser)
                 this.user = {
                     id: this.getUser.id,
                     name: this.getUser.name,
@@ -74,7 +73,7 @@ var userMixin = {
                 bus.$emit("error", {
                     message: "Ops! Falha ao carregar dados " + e.message,
                 });
-                return
+                return null
             }
         },
 
@@ -99,7 +98,7 @@ var userMixin = {
                 bus.$emit("error", {
                     message: "Ops! Ocorreu um erro ao salvar! " + e.message,
                 });
-                return
+                return null
             }
         },
 
@@ -124,7 +123,7 @@ var userMixin = {
                 bus.$emit("error", {
                     message: "Ops! Ocorreu um erro ao salvar! " + e.message,
                 });
-                return
+                return null
             }
         },
 
@@ -143,7 +142,7 @@ var userMixin = {
                 bus.$emit("error", {
                     message: "Ops! Falha ao carregar dados " + e.message,
                 });
-                return
+                return null
             }
         },
 

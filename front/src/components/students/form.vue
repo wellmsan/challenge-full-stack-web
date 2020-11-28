@@ -72,8 +72,6 @@ export default {
           academic_record: student.academic_record,
           cpf: student.cpf,
         };
-        console.log("2");
-        console.log(this.student);
       }
     },
   },

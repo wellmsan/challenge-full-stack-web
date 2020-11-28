@@ -44,10 +44,10 @@ var studentMixin = {
     },
 
     methods: {
-        async getStudentByFilter(params) {
+        getStudentByFilter(params) {
             let loader = this.$loading.show();
             try {
-                await await store.dispatch('Student/loadAll', params)
+                store.dispatch('Student/loadAll', params)
                 setTimeout(function () {
                     loader.hide();
                 }, 1000);
