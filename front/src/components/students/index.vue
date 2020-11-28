@@ -40,7 +40,6 @@ export default {
     onLoadAll() {
       this.getStudentByFilter({});
       for (const student of this.getAllStudents) {
-        console.log(this.students);
         this.dataItems.push({
           id: student.id,
           nome: student.name,

@@ -29,7 +29,6 @@ var studentMixin = {
                 ],
             }
         },
-        students: []
     }),
 
     computed: {
@@ -64,9 +63,9 @@ var studentMixin = {
                 await store.dispatch('Student/get', id)
                 this.student = {
                     id: this.getStudent.id,
-                    nome: this.getStudent.nome,
+                    nome: this.getStudent.name,
                     email: this.getStudent.email,
-                    registroAcademico: this.getStudent.registroAcademico,
+                    registroAcademico: this.getStudent.academic_record,
                     cpf: this.getStudent.cpf,
                 }
                 setTimeout(function () {

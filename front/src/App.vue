@@ -1,8 +1,19 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawer" absolute bottom>
+    <v-navigation-drawer app v-model="drawer">
       <!-- LOGO -->
-      <v-img :src="require('./assets/logo.png')" max-width="400"></v-img>
+      <v-img
+        :src="require('./assets/logo.png')"
+        max-width="400"
+        v-if="drawer"
+      ></v-img>
+      <v-list-item class="px-2">
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-title>John Leider</v-list-item-title>
+      </v-list-item>
       <v-divider></v-divider>
       <v-list nav dense>
         <v-list-item link to="/students">

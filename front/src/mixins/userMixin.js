@@ -27,7 +27,6 @@ var userMixin = {
                 ],
             }
         },
-        users: []
     }),
 
     computed: {
