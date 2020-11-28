@@ -1,10 +1,12 @@
 <template>
   <templateList
     :headers="headers"
-    :items="students"
+    :items="dataItems"
     :itemsPerPage="10"
-    v-on:create="onCreate()"
-    v-on:edit="onEdit(item)"
+    v-on:loadDataItem="onLoadAll"
+    v-on:create="onCreate"
+    v-on:edit="onEdit"
+    v-on:delete="onDelete"
   />
 </template>
 <script>
@@ -31,17 +33,32 @@ export default {
       { text: "CPF", value: "cpf" },
       { text: "Ações", value: "actions", sortable: false },
     ],
-    students: [],
+    dataItems: [],
   }),
 
   methods: {
+    onLoadAll() {
+      this.getStudentByFilter({});
+      for (const student of this.getAllStudents) {
+        console.log(this.students);
+        this.dataItems.push({
+          id: student.id,
+          nome: student.name,
+          email: student.email,
+          cpf: student.cpf,
+          registroAcademico: student.academic_record,
+        });
+      }
+    },
     onCreate() {
       this.$router.push("students/add");
     },
-    onEdit(item) {
-      this.$router.push("students/" + item.id);
+    onEdit(id) {
+      this.$router.push("students/" + id);
     },
-    onDelete() {},
+    onDelete(id) {
+      this.deleteStudent(id);
+    },
   },
 };
 </script>

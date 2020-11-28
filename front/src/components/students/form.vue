@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-text-field
-      name="student.nome"
+      ref="nome"
       v-model="student.nome"
       :rules="student.rules.nome"
       :error-messages="errorMessages"
@@ -10,7 +10,7 @@
       required
     ></v-text-field>
     <v-text-field
-      name="email"
+      ref="email"
       v-model="student.email"
       :rules="student.rules.email"
       :error-messages="errorMessages"
@@ -19,7 +19,7 @@
       required
     ></v-text-field>
     <v-text-field
-      name="registroAcademico"
+      ref="registroAcademico"
       v-model="student.registroAcademico"
       :rules="student.rules.registroAcademico"
       :error-messages="errorMessages"
@@ -28,7 +28,7 @@
       required
     ></v-text-field>
     <v-text-field
-      name="cpf"
+      ref="cpf"
       v-model="student.cpf"
       :rules="student.rules.cpf"
       :error-messages="errorMessages"
@@ -42,6 +42,17 @@
 import studentMixin from "../../mixins/studentMixin";
 export default {
   mixins: [studentMixin],
+
+  props: {
+    id: String,
+  },
+
   data: () => ({}),
+
+  created() {
+    if (this.id != undefined) {
+      this.getStudentById(this.id);
+    }
+  },
 };
 </script>

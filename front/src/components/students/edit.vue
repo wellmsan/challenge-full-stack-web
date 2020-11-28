@@ -1,6 +1,10 @@
 <template>
-  <templateEdit v-on:submit="onUpdate" v-on:reset="onClean">
-    <formStudent />
+  <templateEdit
+    v-on:submit="onUpdate"
+    v-on:reset="onClean"
+    v-on:goBack="goBack"
+  >
+    <formStudent :id="getId" />
   </templateEdit>
 </template>
 <script>
@@ -11,22 +15,33 @@ import formStudent from "./form";
 export default {
   mixins: [studentMixin],
 
-  props: {
-    editable: Boolean,
-  },
-
   components: {
     formStudent,
     templateEdit,
   },
 
+  props: {
+    id: String,
+  },
+
+  computed: {
+    getId() {
+      return this.id;
+    },
+  },
+
+  created() {},
+
   methods: {
-    onUpdate() {
-      console.log("OnUpdate");
+    goBack() {
+      this.$router.push("/students");
     },
     onClean() {
       this.resetStudent();
-      console.log("OnClean");
+    },
+    onUpdate() {
+      this.updateStudent();
+      this.$router.push("/students");
     },
   },
 };

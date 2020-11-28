@@ -39,10 +39,6 @@ var userMixin = {
         },
     },
 
-    created() {
-        this.getUserByFilter({})
-    },
-
     methods: {
         async getUserByFilter(params) {
             let loader = this.$loading.show();
@@ -71,7 +67,6 @@ var userMixin = {
                     email: this.getUser.email,
                     pass: this.getUser.pass,
                 }
-                console.log(this.user)
                 setTimeout(function () {
                     loader.hide();
                 }, 1000);

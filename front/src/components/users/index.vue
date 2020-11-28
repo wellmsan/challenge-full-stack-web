@@ -1,7 +1,7 @@
 <template>
   <templateList
     :headers="headers"
-    :items="dataItens"
+    :items="dataItems"
     :itemsPerPage="10"
     v-on:loadDataItem="onLoadAll"
     v-on:create="onCreate"
@@ -30,14 +30,14 @@ export default {
       { text: "E-mail", sortable: false, value: "email" },
       { text: "Ações", value: "actions", sortable: false },
     ],
-    dataItens: [],
+    dataItems: [],
   }),
 
   methods: {
     onLoadAll() {
       this.getUserByFilter({});
       for (const user of this.getAllUsers) {
-        this.dataItens.push({
+        this.dataItems.push({
           id: user.id,
           nome: user.name,
           email: user.email,
