@@ -77,9 +77,11 @@ expressSwagger(options);
 
 import routes from "./routes/index";
 import UserRoute from "./routes/UserRoute";
+import StudentRoute from "./routes/StudentRoute";
 
 app.use(process.env.BASE_PATH + "/", routes);
 app.use(process.env.BASE_PATH + "/users", UserRoute); //checkJWT
+app.use(process.env.BASE_PATH + "/students", StudentRoute); //checkJWT
 
 // The error handler must be before any other error middleware
 // app.use(Sentry.Handlers.errorHandler());

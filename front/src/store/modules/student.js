@@ -13,94 +13,39 @@ let state = getInitialSate()
 
 // getters
 const getters = {
-    data: state => state.data,
-    object: state => state.object
+    object: state => state.object,
+    data: (state) => { return state.data }
 }
 
 // actions
 const actions = {
-    loadAll({ commit }, params) {
-        return new Promise((resolve, reject) => {
-            api.get(endPoint, params).then(async (res) => {
-                if (res.status == 200) {
-                    const list = await res.data.rows
-                    commit('SET_DATA', list)
-                    resolve(list)
-                } else {
-                    reject()
-                }
-            }).catch(e => {
-                console.log(e)
-                reject()
-            })
-        })
+    reset({ commit }) {
+        commit('RESET');
+    },
+
+    async loadAll({ commit }, params) {
+        const res = await api.get(endPoint, params)
+        commit('SET_DATA', res.data.rows)
     },
 
     async get({ commit }, id) {
-        return await new Promise((resolve, reject) => {
-            api.get(endPoint + '/' + id).then(async (res) => {
-                if (res.status == 200) {
-                    const obj = await res.data
-                    commit('SET_OBJECT', obj)
-                    resolve(obj)
-                } else {
-                    reject()
-                }
-            }).catch(e => {
-                console.log(e)
-                reject()
-            })
-        })
+        const res = await api.get(endPoint + '/' + id)
+        commit('SET_OBJECT', res.data)
     },
 
     async save({ commit }, body) {
-        return await new Promise((resolve, reject) => {
-            api.post(endPoint, body).then(async (res) => {
-                if (res.status == 201) {
-                    const obj = await res.data
-                    commit('ADD_OBJECT', obj)
-                    resolve(obj)
-                } else {
-                    reject()
-                }
-            }).catch((e) => {
-                console.log(e)
-                reject()
-            })
-        })
+        const res = await api.post(endPoint, body)
+        commit('ADD_OBJECT', res.data)
     },
 
     async update({ commit }, id, body) {
-        return await new Promise((resolve, reject) => {
-            api.put(endPoint + '/' + id, body).then(async (res) => {
-                if (res.status == 201) {
-                    const obj = await res.data
-                    commit('SET_OBJECT', obj)
-                    resolve(obj)
-                } else {
-                    reject()
-                }
-            }).catch((e) => {
-                console.log(e)
-                reject()
-            })
-        })
+        const res = await api.put(endPoint + '/' + id, body)
+        commit('SET_OBJECT', res.data)
     },
 
     async delete({ commit }, id) {
-        return await new Promise((resolve, reject) => {
-            api.delete(endPoint + '/' + id).then(async (res) => {
-                if (res.status == 201) {
-                    commit('DEL_OBJECT', id)
-                    resolve(id)
-                } else {
-                    reject()
-                }
-            }).catch((e) => {
-                console.log(e)
-                reject()
-            })
-        })
+        await api.delete(endPoint + '/' + id)
+        commit('DEL_OBJECT', id)
     }
 }
 
@@ -117,12 +62,14 @@ const mutations = {
         state.object = object
     },
 
-    SET_DATA(state, { data }) {
+    SET_DATA(state, data) {
         state.data = data
     },
 
     ADD_OBJECT(state, { data }) {
-        state.data.unshift(data)
+        let list = [...state.data, data]
+        state.data = list
+        // Vue.set(state, data, [...data])
     },
 
     DEL_OBJECT(state, id) {
