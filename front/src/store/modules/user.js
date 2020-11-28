@@ -1,10 +1,11 @@
+// import Vue from 'vue';
 import api from '../../config/api'
 const endPoint = '/users'
 
 const getInitialSate = () => {
     return {
-        users: [],
-        user: []
+        data: [],
+        object: null
     }
 }
 
@@ -13,8 +14,8 @@ let state = getInitialSate()
 
 // getters
 const getters = {
-    data: state => state.data,
-    objeto: state => state.objeto
+    object: state => state.object,
+    data: (state) => { return state.data }
 }
 
 // actions
@@ -23,84 +24,29 @@ const actions = {
         commit('RESET');
     },
 
-    loadAll({ commit }, params) {
-        return new Promise((resolve, reject) => {
-            api.get(endPoint, params).then(async (res) => {
-                if (res.status == 200) {
-                    commit('SET_USERS', await res)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch(e => {
-                console.log(e)
-                reject()
-            })
-        })
+    async loadAll({ commit }, params) {
+        const res = await api.get(endPoint, params)
+        commit('SET_DATA', res.data.rows)
     },
 
-    get({ commit }, id) {
-        return new Promise((resolve, reject) => {
-            api.get(endPoint + '/' + id).then(async (res) => {
-                if (res.status == 200) {
-                    commit('SET_USER', await res)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch(e => {
-                console.log(e)
-                reject()
-            })
-        })
+    async get({ commit }, id) {
+        const res = await api.get(endPoint + '/' + id)
+        commit('SET_OBJECT', res.data)
     },
 
-    save({ commit }, body) {
-        return new Promise((resolve, reject) => {
-            api.post(endPoint, body).then(async (res) => {
-                if (res.status == 201) {
-                    commit('SET_USER', await res.data)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch((e) => {
-                console.log(e)
-                reject()
-            })
-        })
+    async save({ commit }, body) {
+        const res = await api.post(endPoint, body)
+        commit('ADD_OBJECT', res.data)
     },
 
-    update({ commit }, id, body) {
-        return new Promise((resolve, reject) => {
-            api.put(endPoint + '/' + id, body).then(async (res) => {
-                if (res.status == 201) {
-                    commit('SET_USER', await res.data)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch((e) => {
-                console.log(e)
-                reject()
-            })
-        })
+    async update({ commit }, id, body) {
+        const res = await api.put(endPoint + '/' + id, body)
+        commit('SET_OBJECT', res.data)
     },
 
-    delete({ commit }, id) {
-        return new Promise((resolve, reject) => {
-            api.delete(endPoint + '/' + id).then(async (res) => {
-                if (res.status == 201) {
-                    commit('DEL_USER', id)
-                    resolve()
-                } else {
-                    reject()
-                }
-            }).catch((e) => {
-                console.log(e)
-                reject()
-            })
-        })
+    async delete({ commit }, id) {
+        await api.delete(endPoint + '/' + id)
+        commit('DEL_OBJECT', id)
     }
 }
 
@@ -113,17 +59,23 @@ const mutations = {
         });
     },
 
-    SET_USER(state, object) {
-        state.user = object
+    SET_OBJECT(state, object) {
+        state.object = object
     },
 
-    SET_USERS(state, { data }) {
-        state.users = data
+    SET_DATA(state, data) {
+        state.data = data
     },
 
-    DEL_USER(state, id) {
-        const index = state.users.findIndex(obj => obj.id == id)
-        state.users.splice(index, 1)
+    ADD_OBJECT(state, { data }) {
+        let list = [...state.data, data]
+        state.data = list
+        // Vue.set(state, data, [...data])
+    },
+
+    DEL_OBJECT(state, id) {
+        const index = state.data.findIndex(obj => obj.id == id)
+        state.data.splice(index, 1)
     }
 }
 

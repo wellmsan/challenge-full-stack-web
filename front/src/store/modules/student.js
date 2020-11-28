@@ -3,8 +3,8 @@ const endPoint = '/students'
 
 const getInitialSate = () => {
     return {
-        students: [],
-        student: []
+        data: [],
+        object: null
     }
 }
 
@@ -14,86 +14,91 @@ let state = getInitialSate()
 // getters
 const getters = {
     data: state => state.data,
-    objeto: state => state.objeto
+    object: state => state.object
 }
 
 // actions
 const actions = {
-    reset({ commit }) {
-        commit('RESET');
-    },
-
-    loadAll({ commit }) {
+    loadAll({ commit }, params) {
         return new Promise((resolve, reject) => {
-            api.get(endPoint).then(async (res) => {
+            api.get(endPoint, params).then(async (res) => {
                 if (res.status == 200) {
-                    commit('SET_DATA', await res)
-                    resolve()
+                    const list = await res.data.rows
+                    commit('SET_DATA', list)
+                    resolve(list)
                 } else {
                     reject()
                 }
             }).catch(e => {
-                reject(e.message)
+                console.log(e)
+                reject()
             })
         })
     },
 
-    get({ commit }, id) {
-        return new Promise((resolve, reject) => {
+    async get({ commit }, id) {
+        return await new Promise((resolve, reject) => {
             api.get(endPoint + '/' + id).then(async (res) => {
                 if (res.status == 200) {
-                    commit('SET_OBJECT', await res)
-                    resolve()
+                    const obj = await res.data
+                    commit('SET_OBJECT', obj)
+                    resolve(obj)
                 } else {
                     reject()
                 }
             }).catch(e => {
-                reject(e.message)
+                console.log(e)
+                reject()
             })
         })
     },
 
-    save({ commit }, body) {
-        return new Promise((resolve, reject) => {
+    async save({ commit }, body) {
+        return await new Promise((resolve, reject) => {
             api.post(endPoint, body).then(async (res) => {
                 if (res.status == 201) {
-                    commit('SET_OBJECT', await res.data)
-                    resolve()
+                    const obj = await res.data
+                    commit('ADD_OBJECT', obj)
+                    resolve(obj)
                 } else {
                     reject()
                 }
             }).catch((e) => {
-                reject(e.message)
+                console.log(e)
+                reject()
             })
         })
     },
 
-    update({ commit }, id, body) {
-        return new Promise((resolve, reject) => {
+    async update({ commit }, id, body) {
+        return await new Promise((resolve, reject) => {
             api.put(endPoint + '/' + id, body).then(async (res) => {
                 if (res.status == 201) {
-                    commit('SET_OBJECT', await res.data)
-                    resolve()
+                    const obj = await res.data
+                    commit('SET_OBJECT', obj)
+                    resolve(obj)
                 } else {
                     reject()
                 }
             }).catch((e) => {
-                reject(e.message)
+                console.log(e)
+                reject()
             })
         })
     },
 
-    delete({ commit }, id) {
-        return new Promise((resolve, reject) => {
+    async delete({ commit }, id) {
+        return await new Promise((resolve, reject) => {
             api.delete(endPoint + '/' + id).then(async (res) => {
                 if (res.status == 201) {
-                    commit('DEL_STUDENT', id)
-                    resolve()
+                    commit('DEL_OBJECT', id)
+                    resolve(id)
                 } else {
                     reject()
                 }
             }).catch((e) => {
-                reject(e.message)
+                console.log(e)
+                reject()
             })
         })
     }
@@ -108,17 +113,21 @@ const mutations = {
         });
     },
 
-    SET_STUDENT(state, object) {
-        state.student = object
+    SET_OBJECT(state, object) {
+        state.object = object
     },
 
-    SET_STUDENTS(state, { data }) {
-        state.students = data
+    SET_DATA(state, { data }) {
+        state.data = data
     },
 
-    DEL_STUDENT(state, id) {
-        const index = state.students.findIndex(obj => obj.id == id)
-        state.students.splice(index, 1)
+    ADD_OBJECT(state, { data }) {
+        state.data.unshift(data)
+    },
+
+    DEL_OBJECT(state, id) {
+        const index = state.data.findIndex(obj => obj.id == id)
+        state.data.splice(index, 1)
     }
 }
 

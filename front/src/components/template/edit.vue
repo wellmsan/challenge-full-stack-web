@@ -26,7 +26,7 @@ export default {
 
   methods: {
     goBack() {
-      this.$router.push("/students");
+      this.$emit("goBack");
     },
     submit() {
       this.$emit("submit");

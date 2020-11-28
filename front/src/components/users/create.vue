@@ -11,8 +11,6 @@
 import templateCreate from "../template/create";
 import userMixin from "../../mixins/userMixin";
 import formUser from "./form";
-import bus from "../../config/eventHub";
-import md5 from "js-md5";
 
 export default {
   mixins: [userMixin],
@@ -30,20 +28,8 @@ export default {
       this.resetUser();
     },
     onSave() {
-      let loader = this.$loading.show();
-      this.user = this.$refs.form.user;
-      try {
-        this.saveUser({
-          name: this.user.name,
-          email: this.user.email,
-          pass: md5(this.user.pass),
-        });
-        bus.$emit("sucess", { message: "Oba! Usuário Cadastrodo." });
-      } catch (e) {
-        bus.$emit("error", { message: "Ops! " + e.response.data.message });
-        console.error(e.message);
-      }
-      loader.hide();
+      this.saveUser();
+      this.$router.push("/users");
     },
   },
 };

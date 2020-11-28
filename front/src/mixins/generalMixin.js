@@ -1,10 +1,13 @@
-
+import bus from "../config/eventHub";
 
 var generalMixin = {
     data: () => ({
         valid: false,
         errorMessages: "",
         formHasErrors: false,
+        showAlert: false,
+        alertType: 'error',
+        alertMessage: '',
     }),
 
     computed: {
@@ -16,9 +19,18 @@ var generalMixin = {
         },
     },
 
-    methods: {
-
-    }
+    mounted() {
+        bus.$on("error", (alert) => {
+            this.showAlert = true;
+            this.alertType = "error";
+            this.alertMessage = alert.message;
+        });
+        bus.$on("success", (alert) => {
+            this.showAlert = true;
+            this.alertType = "success";
+            this.alertMessage = alert.message;
+        });
+    },
 }
 
 export default generalMixin

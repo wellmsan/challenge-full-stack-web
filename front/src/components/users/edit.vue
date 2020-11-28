@@ -1,32 +1,47 @@
 <template>
-  <templateEdit v-on:submit="onUpdate" v-on:reset="onClean">
-    <formStudent />
+  <templateEdit
+    v-on:submit="onUpdate"
+    v-on:reset="onClean"
+    v-on:goBack="goBack"
+  >
+    <formUser :id="getId" />
   </templateEdit>
 </template>
 <script>
 import templateEdit from "../template/edit";
-import studentMixin from "../../mixins/studentMixin";
-import formStudent from "./form";
+import userMixin from "../../mixins/userMixin";
+import formUser from "./form";
 
 export default {
-  mixins: [studentMixin],
-
-  props: {
-    editable: Boolean,
-  },
+  mixins: [userMixin],
 
   components: {
-    formStudent,
+    formUser,
     templateEdit,
   },
 
+  props: {
+    id: String,
+  },
+
+  computed: {
+    getId() {
+      return this.id;
+    },
+  },
+
+  created() {},
+
   methods: {
-    onUpdate() {
-      console.log("OnUpdate");
+    goBack() {
+      this.$router.push("/users");
     },
     onClean() {
-      this.resetStudent();
-      console.log("OnClean");
+      this.resetUser();
+    },
+    onUpdate() {
+      this.updateUser();
+      this.$router.push("/users");
     },
   },
 };

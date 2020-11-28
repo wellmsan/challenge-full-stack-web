@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-text-field
-      name="nome"
+      ref="nome"
       v-model="user.name"
       :rules="user.rules.name"
       :error-messages="errorMessages"
@@ -10,7 +10,7 @@
       required
     ></v-text-field>
     <v-text-field
-      name="email"
+      ref="email"
       v-model="user.email"
       :rules="user.rules.email"
       :error-messages="errorMessages"
@@ -19,7 +19,7 @@
       required
     ></v-text-field>
     <v-text-field
-      name="senha"
+      ref="senha"
       v-model="user.pass"
       :rules="user.rules.pass"
       :error-messages="errorMessages"
@@ -34,6 +34,17 @@
 import userMixin from "../../mixins/userMixin";
 export default {
   mixins: [userMixin],
+
+  props: {
+    id: String,
+  },
+
   data: () => ({}),
+
+  created() {
+    if (this.id != undefined) {
+      this.getUserById(this.id);
+    }
+  },
 };
 </script>

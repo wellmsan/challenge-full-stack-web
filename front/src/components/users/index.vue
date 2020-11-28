@@ -1,10 +1,12 @@
 <template>
   <templateList
     :headers="headers"
-    :items="users"
+    :items="dataItens"
     :itemsPerPage="10"
-    v-on:create="onCreate()"
-    v-on:edit="onEdit(item)"
+    v-on:loadDataItem="onLoadAll"
+    v-on:create="onCreate"
+    v-on:edit="onEdit"
+    v-on:delete="onDelete"
   />
 </template>
 <script>
@@ -23,23 +25,20 @@ export default {
       {
         text: "Nome",
         align: "start",
-        sortable: false,
         value: "nome",
       },
-      { text: "E-mail", value: "email" },
+      { text: "E-mail", sortable: false, value: "email" },
       { text: "Ações", value: "actions", sortable: false },
     ],
-    users: [],
+    dataItens: [],
   }),
-
-  created() {
-    this.onLoadAll();
-  },
 
   methods: {
     onLoadAll() {
-      for (const user of this.getAllUsers.rows) {
-        this.users.push({
+      this.getUserByFilter({});
+      for (const user of this.getAllUsers) {
+        this.dataItens.push({
+          id: user.id,
           nome: user.name,
           email: user.email,
         });
@@ -48,10 +47,13 @@ export default {
     onCreate() {
       this.$router.push("users/add");
     },
-    onEdit(item) {
-      this.$router.push("users/" + item.id);
+    onEdit(id) {
+      this.$router.push("users/" + id);
     },
-    onDelete() {},
+    onDelete(id) {
+      console.log(id);
+      this.deleteUser(id);
+    },
   },
 };
 </script>
