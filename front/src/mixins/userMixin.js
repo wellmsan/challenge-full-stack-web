@@ -39,10 +39,6 @@ var userMixin = {
         },
     },
 
-    created() {
-        this.getUserByFilter({})
-    },
-
     methods: {
         async getUserByFilter(params) {
             let loader = this.$loading.show();
