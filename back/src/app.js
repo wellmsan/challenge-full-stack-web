@@ -33,9 +33,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 async function checkJWT(req, res, next) {
-  const payload = jwt.decode({ token: req.headers['x-access-token'], })
-  let usuario = await new UserRepository().get(payload.userId)
-  let checkToken = jwt.check({ token: req.headers['x-access-token'], usuario: usuario })
+  const payload = jwt.decode(req.headers['x-access-token'])
+  let checkToken = jwt.check(req.headers['x-access-token'])
   if (checkToken.status === 200) {
     next()
   } else {
@@ -80,8 +79,8 @@ import UserRoute from "./routes/UserRoute";
 import StudentRoute from "./routes/StudentRoute";
 
 app.use(process.env.BASE_PATH + "/", routes);
-app.use(process.env.BASE_PATH + "/users", UserRoute); //checkJWT
-app.use(process.env.BASE_PATH + "/students", StudentRoute); //checkJWT
+app.use(process.env.BASE_PATH + "/users", checkJWT, UserRoute);
+app.use(process.env.BASE_PATH + "/students", checkJWT, StudentRoute);
 
 // The error handler must be before any other error middleware
 // app.use(Sentry.Handlers.errorHandler());
