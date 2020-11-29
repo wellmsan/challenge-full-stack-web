@@ -1,5 +1,5 @@
 # This file is a template, and might need editing before it works on your project.
-FROM node:lts
+FROM node:12
 
 LABEL version="1.0.0" description="Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
