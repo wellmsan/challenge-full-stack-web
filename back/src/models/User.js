@@ -16,7 +16,8 @@ class User extends Sequelize.Model {
                 },
                 email: {
                     type: DataTypes.STRING(255),
-                    allowNull: true
+                    allowNull: true,
+                    unique: true
                 },
                 pass: {
                     type: DataTypes.STRING(100),

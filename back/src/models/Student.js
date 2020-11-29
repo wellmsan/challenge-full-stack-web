@@ -14,6 +14,7 @@ class Student extends Sequelize.Model {
                 academic_record: {
                     type: DataTypes.STRING(10),
                     allowNull: false,
+                    unique: true
                 },
                 name: {
                     type: DataTypes.STRING(50),
@@ -25,7 +26,8 @@ class Student extends Sequelize.Model {
                 },
                 cpf: {
                     type: DataTypes.STRING(14),
-                    allowNull: true
+                    allowNull: true,
+                    unique: true
                 },
             },
             {
