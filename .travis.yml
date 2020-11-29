@@ -1,5 +1,9 @@
 sudo: required
 
+#language: node_js
+#node_js:
+#  - node:lts
+
 services:
   - docker
 
@@ -10,14 +14,15 @@ env:
 
 jobs:
   include:
-    - stage: teste
-      script:
-      - npm run test
     - stage: build BackEnd
       script:
       - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_URL
       - docker build --file /back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
       - docker push $REGISTRY_URL/grupoa-back
+    - stage: test
+      script:
+      - cd /back
+      - npm run test
     - stage: deploy BackEnd
       script:
       - docker stack deploy -c ./back/docker-compose.yml grupo-a
