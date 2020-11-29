@@ -3,18 +3,18 @@ FROM node:13.2.0-alpine3.10
 
 LABEL version="1.0.0" description="API Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
-RUN mkdir /app
+RUN mkdir /back
 
-WORKDIR /app
+WORKDIR /back
 
-COPY . /app
+COPY . /back
 
-COPY ./package.json /app/package.json
-COPY ./start.sh /app/start.sh
+COPY ./package.json /back/package.json
+COPY ./start.sh /back/start.sh
 
-RUN cd /app; chmod 777 start.sh;
+RUN cd /back; chmod 777 start.sh;
 
-RUN cd /app; npm install; 
+RUN cd /back; npm install; 
 
 EXPOSE 3000 
 

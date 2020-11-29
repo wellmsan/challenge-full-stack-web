@@ -1,0 +1,19 @@
+dist: ruby
+
+jobs:
+  include:
+    - stage: teste
+      script:
+      - npm run test
+    - stage: build BackEnd
+      script:
+      - docker build --file /back/Dockerfile --no-cache -t grupoa-back .
+    - stage: deploy BackEnd
+      script:
+      - docker stack deploy -c ./back/docker-compose.yml grupo-a
+    - stage: build FrontEnd
+      script:
+      - docker build --file /front/Dockerfile --no-cache -t grupoa-front
+    - stage: deploy FrontEnd
+      script:
+      - docker stack deploy -c ./front/docker-compose.yml grupo-a
