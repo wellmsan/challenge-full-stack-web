@@ -1,5 +1,5 @@
 # This file is a template, and might need editing before it works on your project.
-FROM node:13.2.0-alpine3.10
+FROM node:lts
 
 LABEL version="1.0.0" description="API Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
