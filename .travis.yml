@@ -1,4 +1,12 @@
-dist: ruby
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - REGISTRY_USER=${REGISTRY_USER}
+    - REGISTRY_PASS=${REGISTRY_PASS}
 
 jobs:
   include:
@@ -7,13 +15,17 @@ jobs:
       - npm run test
     - stage: build BackEnd
       script:
-      - docker build --file /back/Dockerfile --no-cache -t grupoa-back .
+      - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_URL
+      - docker build --file /back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
+      - docker push $REGISTRY_URL/grupoa-back
     - stage: deploy BackEnd
       script:
       - docker stack deploy -c ./back/docker-compose.yml grupo-a
     - stage: build FrontEnd
       script:
-      - docker build --file /front/Dockerfile --no-cache -t grupoa-front
+      - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_URL
+      - docker build --file /back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-front .
+      - docker push $REGISTRY_URL/grupoa-front
     - stage: deploy FrontEnd
       script:
       - docker stack deploy -c ./front/docker-compose.yml grupo-a

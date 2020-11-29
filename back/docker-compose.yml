@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   grupoa-back:
-    image: grupoa-back:latest
+    image: $REGISTRY_URL/grupoa-back:latest
     restart: always
     networks:
       - traefik-public
