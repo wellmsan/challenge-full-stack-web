@@ -1,7 +1,7 @@
 # This file is a template, and might need editing before it works on your project.
 FROM node:13.2.0-alpine3.10
 
-LABEL version="1.0.0" description="API SGA" maintainer="Welber Santana <wmsantana@uneb.br>"
+LABEL version="1.0.0" description="API Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
 RUN mkdir /app
 
