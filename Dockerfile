@@ -10,14 +10,14 @@ WORKDIR /back
 
 COPY ./back /back
 
-COPY ./package.json /back/package.json
-COPY ./start.sh /back/start.sh
+COPY ./back/package.json /back/package.json
+COPY ./back/start.sh /back/start.sh
 
 WORKDIR /front
 
 COPY ./front /front
 
-COPY ./package.json /front/package.json
-COPY ./start.sh /front/start.sh
+COPY ./front/package.json /front/package.json
+COPY ./front/start.sh /front/start.sh
 
 
