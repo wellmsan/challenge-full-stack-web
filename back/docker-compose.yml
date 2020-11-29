@@ -1,11 +1,11 @@
 version: "3.4"
 
 services:
-  sga-api:
-    image: ${PROJECT_NAME}:latest
+  grupoa-back:
+    image: $REGISTRY_URL/grupoa-back:latest
     restart: always
     networks:
-      - traefik-uneb
+      - traefik-public
     deploy:
       resources:
           limits:
@@ -17,41 +17,22 @@ services:
           - node.labels.worker == true  
       labels:
         - "traefik.enable=true"
-        - "traefik.docker.network=traefik-uneb"
-        - "traefik.http.routers.${PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.rule=(Host(`${CI_ENVIRONMENT_URL}`) || Host(`www.${CI_ENVIRONMENT_URL}`)) && PathPrefix(`${BASE_PATH}`)"
-        - "traefik.http.routers.${PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.entrypoints=web"
-        - "traefik.http.services.${PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.loadbalancer.server.port=${PORT}"
+        - "traefik.docker.network=traefik-public"
+        - "traefik.http.routers.grupoa-back.rule=Host(`app.well.eti.br`) && PathPrefix(`/grupoa`)"
+        - "traefik.http.routers.grupoa-back.entrypoints=web"
+        - "traefik.http.services.grupoa-back.loadbalancer.server.port=3000"
     environment:
-      ENVIRONMENT: ${CI_ENVIRONMENT_NAME}
-      PROJECT_NAME: ${PROJECT_NAME}
-      DOCKER_VERSION: ${DOCKER_VERSION}
-      SENTRY_KEY: ${SENTRY_KEY}
-      SENTRY_PROJECT_ID: ${SENTRY_PROJECT_ID}
-      SONAR_LOGIN: ${SONAR_LOGIN}
-      SONAR_URL: ${SONAR_URL}
-      TOKEN_GITLAB: ${TOKEN_GITLAB}
-      URL_GITLAB: ${URL_GITLAB}
+      APP_NAME: ${APP_NAME}
+      NODE_ENV: ${NODE_ENV}
+      SECRET: ${SECRET}
       BASE_PATH: ${BASE_PATH}
       TZ: ${TZ}
-      SYSTEM_NAME: ${SYSTEM_NAME}
-      DB_HOST: ${DB_HOST}
-      DB_PASS: ${DB_PASS}
+      DB_DIALECT: ${DB_DIALECT}
       DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
       DB_DATA: ${DB_DATA}
-      DB_INST: ${DB_INST}      
-      DISABLE_HTTP_HEALTH_CHECK: ${DISABLE_HTTP_HEALTH_CHECK}
-      HTTP_HEALTH_CHECK_URL: ${CI_ENVIRONMENT_URL}${BASE_PATH}
-      LDAP_HOST: ${LDAP_HOST}
-      LDAP_PORT: ${LDAP_PORT}
-      LDAP_USER: ${LDAP_USER}
-      LDAP_PASS: ${LDAP_PASS}
-      LDAP_DN: ${LDAP_DN}
-      LDAP_URI: ${LDAP_URI}
-      AD_DN: ${AD_DN}
-      LIMIT_MEM: ${LIMIT_MEM}
-      CERTIFICADO_KEY: ${CERTIFICADO_KEY}
-      CERTIFICADO_CRT: ${CERTIFICADO_CRT}
-      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+
 networks:
-  traefik-uneb:
+  traefik-public:
     external: true    
