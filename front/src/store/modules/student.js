@@ -38,14 +38,14 @@ const actions = {
         commit('ADD_OBJECT', res.data)
     },
 
-    async update({ commit }, id, body) {
-        const res = await api.put(endPoint + '/' + id, body)
-        commit('SET_OBJECT', res.data)
+    async update({ commit }, body) {
+        const res = await api.put(endPoint + '/' + body.id, body)
+        commit('UP_DATA', res.data)
     },
 
     async delete({ commit }, id) {
         await api.delete(endPoint + '/' + id)
-        commit('DEL_OBJECT', id)
+        commit('DEL_DATA', id)
     }
 }
 
@@ -67,13 +67,17 @@ const mutations = {
     },
 
     ADD_OBJECT(state, { data }) {
-        // let list = [...state.data, data]
-        // state.data = list
-        // Vue.set(state, data, [...data])
         state.data.push(data)
     },
 
-    DEL_OBJECT(state, id) {
+    UP_DATA(state, data) {
+        const index = state.data.findIndex(obj => obj.id === data.id);
+        if (index !== -1) {
+            state.data.splice(index, 1, data);
+        }
+    },
+
+    DEL_DATA(state, id) {
         const index = state.data.findIndex(obj => obj.id == id)
         state.data.splice(index, 1)
     }

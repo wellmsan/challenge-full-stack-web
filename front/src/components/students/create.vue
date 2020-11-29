@@ -26,6 +26,7 @@ export default {
     },
     onClean() {
       this.resetStudent();
+      this.$router.push("/students");
     },
     onSave() {
       if (this.saveStudent() != null) this.$router.push("/students");

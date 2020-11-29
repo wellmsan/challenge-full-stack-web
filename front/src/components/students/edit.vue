@@ -30,7 +30,9 @@ export default {
     },
   },
 
-  created() {},
+  created() {
+    this.getStudentById(this.id);
+  },
 
   methods: {
     goBack() {

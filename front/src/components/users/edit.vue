@@ -30,7 +30,9 @@ export default {
     },
   },
 
-  created() {},
+  created() {
+    this.getUserById(this.id);
+  },
 
   methods: {
     goBack() {
@@ -38,6 +40,7 @@ export default {
     },
     onClean() {
       this.resetUser();
+      this.$router.push("/users");
     },
     onUpdate() {
       if (this.updateUser() != null) this.$router.push("/users");

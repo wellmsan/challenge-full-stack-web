@@ -3,7 +3,7 @@
     <v-text-field
       ref="nome"
       v-model="user.name"
-      :rules="user.rules.name"
+      :rules="rules.name"
       :error-messages="errorMessages"
       label="Nome Completo"
       placeholder="John Doe"
@@ -12,7 +12,7 @@
     <v-text-field
       ref="email"
       v-model="user.email"
-      :rules="user.rules.email"
+      :rules="rules.email"
       :error-messages="errorMessages"
       label="E-mail para contato"
       placeholder="johndoe@gmail.com"
@@ -21,7 +21,7 @@
     <v-text-field
       ref="senha"
       v-model="user.pass"
-      :rules="user.rules.pass"
+      :rules="rules.pass"
       :error-messages="errorMessages"
       label="Senha"
       placeholder="******"
@@ -39,10 +39,35 @@ export default {
     id: String,
   },
 
-  data: () => ({}),
+  data: () => ({
+    rules: {
+      name: [
+        (v) => !!v || "Nome é obrigatrio!",
+        (v) =>
+          (v && v.length >= 10) || "Nome precisa ter mais de 10 caracteres!",
+      ],
+      email: [
+        (v) => !!v || "E-mail é obrigatrio!",
+        (v) => /.+@.+\..+/.test(v) || "E-mail deve ser válido!",
+      ],
+      pass: [
+        (v) => !!v || "Senha é obrigatrio!",
+        (v) =>
+          (v && v.length >= 6) || "Senha precisa ter mais de 6 caracteres!",
+      ],
+    },
+  }),
 
   created() {
-    if (this.id != undefined) this.getUserById(this.id);
+    this.loadForm();
+  },
+
+  methods: {
+    async loadForm() {
+      if (this.id != undefined && this.getUser != null) {
+        this.user = this.getUser;
+      }
+    },
   },
 };
 </script>

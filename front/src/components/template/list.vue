@@ -16,7 +16,7 @@
           Novo {{ caption }}
         </v-btn>
       </v-card-title>
-      <v-alert :type="alertType" v-if="showAlert">
+      <v-alert :type="alertType" v-if="showAlert" dismissible>
         {{ alertMessage }}
       </v-alert>
       <v-data-table
@@ -52,7 +52,7 @@
             >Cancelar</v-btn
           >
           <v-btn color="red darken-1" flat @click="confirmDelete"
-            >Excluir</v-btn
+            >Confirmar</v-btn
           >
         </v-card-actions>
       </v-card>

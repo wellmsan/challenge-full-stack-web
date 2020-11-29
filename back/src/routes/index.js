@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import jwt from '../lib/JWTUtils';
 import awaitErorrHandlerFactory from '../lib/AwaitErorrHandlerFactory'
-import apiRhbahia from '../config/apiRhbahia'
-import md5 from 'js-md5'
 
 import UserRepository from '../repositories/UserRepository'
 

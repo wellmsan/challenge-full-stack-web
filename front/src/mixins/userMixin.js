@@ -12,20 +12,6 @@ var userMixin = {
             name: '',
             email: '',
             pass: '',
-            rules: {
-                name: [
-                    v => !!v || 'Nome é obrigatrio!',
-                    v => (v && v.length >= 10) || 'Nome precisa ter mais de 10 caracteres!',
-                ],
-                email: [
-                    v => !!v || 'E-mail é obrigatrio!',
-                    v => /.+@.+\..+/.test(v) || 'E-mail deve ser válido!',
-                ],
-                pass: [
-                    v => !!v || 'Senha é obrigatrio!',
-                    v => (v && v.length >= 6) || 'Senha precisa ter mais de 6 caracteres!',
-                ],
-            }
         },
     }),
 

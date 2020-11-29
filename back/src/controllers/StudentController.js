@@ -17,6 +17,8 @@ class StudentController extends AbstractController {
     }
 
     update(req, res) {
+        delete req.body.academic_record
+        delete req.body.cpf
         super.update(req, res, repository)
     }
 
