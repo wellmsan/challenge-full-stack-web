@@ -11,11 +11,11 @@
   "main": "dist/app.js",
   "scripts": {
     "prestart": "npm run build",
-    "start": "nodemon src/app --exec \"node -r babel-register\"",
+    "start": "nodemon src/app --exec \"node -r babel-register\" --ignore test",
     "start:dev": "nodemon src/app --exec \"npm run lint && node -r babel-register\"",
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir dist && babel src/ -s -d dist",
-    "test": "mocha --exit --require babel-register test/",
+    "test": "NODE_ENV=test mocha --exit --require babel-register test/",
     "lint": "esw src",
     "semantic-release": "semantic-release -e @semantic-release/gitlab -D"
   },
@@ -25,6 +25,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
     "config": "^1.31.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -47,6 +48,7 @@
     "sequelize": "^5.22.3",
     "sequelize-auto-migrations": "^1.0.3",
     "sequelize-querystring": "^0.10.0",
+    "sqlite3": "^5.0.0",
     "validatorjs": "^3.20.0"
   },
   "keywords": [

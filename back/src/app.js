@@ -3,26 +3,27 @@ import logger from "morgan";
 import bodyParser from "body-parser";
 import http from "http";
 import path from "path";
-import config from "config";
+import Config from "config";
 import SequelizeDB from "./lib/SequelizeDB";
 import cors from "cors";
 import jwt from "./lib/JWTUtils";
+import configDatabase from '../config/config'
 
-import UserRepository from "./repositories/UserRepository";
-
-require("dotenv").config();
+require("dotenv").config({
+  path: process.env.NODE_ENV == 'test' ? '.env.test' : '.env'
+});
 
 const app = express();
 app.use(cors());
 
 // Connect DataBase with Sequelize
-const sequelizeDB = new SequelizeDB(process.env.DATABASE_CONNECTION_STRING, process.env.TZ)
+const sequelizeDB = new SequelizeDB(configDatabase, process.env.TZ)
 sequelizeDB.connect()
 
 app.disable("x-powered-by"); // disable x-powered-by
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "ejs");
-app.set("port", config.get("app.port"));
+app.set("port", Config.get("app.port"));
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -33,9 +34,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 async function checkJWT(req, res, next) {
-  const payload = jwt.decode(req.headers['x-access-token'])
   let checkToken = jwt.check(req.headers['x-access-token'])
-  if (checkToken.status === 200) {
+  if (checkToken.status === 200 || process.env.NODE_ENV == 'test') {
     next()
   } else {
     return res.status(checkToken.status).send({ auth: checkToken.auth, message: checkToken.message })
@@ -108,8 +108,8 @@ const server = http.createServer(app);
 // const port = app.get("port");
 
 server.listen(process.env.PORT, () => {
-  console.log(`Application listening on ${config.get('app.baseUrl')}`);
-  console.log(`Environment => ${config.util.getEnv('NODE_ENV')}`);
+  console.log(`Application listening on ${Config.get('app.baseUrl')}`);
+  console.log(`Environment => ${Config.util.getEnv('NODE_ENV')}`);
 });
 
 export default app;
