@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 import request from 'supertest';
 import app from '../src/app';
 
-describe('User', () => {
+describe('User Test /users', () => {
     it('Get All Users', async () => {
         await request(app)
             .get('/users')

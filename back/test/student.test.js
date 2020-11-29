@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 import request from 'supertest';
 import app from '../src/app';
 
-describe('Student', () => {
+describe('Student Test /students', () => {
 
     it('Create student', async () => {
         await request(app)
