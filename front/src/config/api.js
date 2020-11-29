@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import store from '../store'
 
 Vue.use(VueAxios, axios)
 
@@ -13,9 +14,8 @@ api.interceptors.request.use(
     (config) => {
         try {
             let token
-            if (localStorage[process.env.VUE_APP_PROJECT_NAME] != undefined) {
-                token = JSON.parse(localStorage[process.env.VUE_APP_PROJECT_NAME]).Auth.token
-            }
+            const auth = store.state['Auth'].object
+            if (auth != undefined) token = auth.token
             if (token) {
                 config.headers['x-access-token'] = token
             }

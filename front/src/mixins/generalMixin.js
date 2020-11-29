@@ -2,7 +2,7 @@ import bus from "../config/eventHub";
 
 var generalMixin = {
     data: () => ({
-        valid: false,
+        valid: true,
         errorMessages: "",
         formHasErrors: false,
         showAlert: false,
@@ -15,7 +15,7 @@ var generalMixin = {
             const routes = this.$route.matched.filter((route) => {
                 return route.name;
             });
-            return routes[0].name;
+            return routes[1].name;
         },
     },
 

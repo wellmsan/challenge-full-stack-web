@@ -1,9 +1,10 @@
+// import Vue from 'vue';
+// import Vue from 'vue';
 import api from '../../config/api'
-const endPoint = '/students'
+const endPoint = '/login'
 
 const getInitialSate = () => {
   return {
-    data: [],
     object: null
   }
 }
@@ -14,7 +15,6 @@ let state = getInitialSate()
 // getters
 const getters = {
   object: state => state.object,
-  data: (state) => { return state.data }
 }
 
 // actions
@@ -23,30 +23,15 @@ const actions = {
     commit('RESET');
   },
 
-  async loadAll({ commit }, params) {
-    const res = await api.get(endPoint, params)
-    commit('SET_DATA', res.data.rows)
-  },
-
-  async get({ commit }, id) {
-    const res = await api.get(endPoint + '/' + id)
-    commit('SET_OBJECT', res.data)
-  },
-
-  async save({ commit }, body) {
+  async login({ commit }, body) {
     const res = await api.post(endPoint, body)
-    commit('ADD_OBJECT', res.data)
-  },
-
-  async update({ commit }, id, body) {
-    const res = await api.put(endPoint + '/' + id, body)
     commit('SET_OBJECT', res.data)
   },
 
-  async delete({ commit }, id) {
-    await api.delete(endPoint + '/' + id)
-    commit('DEL_OBJECT', id)
-  }
+  async logout({ commit }) {
+    commit('DEL_OBJECT')
+  },
+
 }
 
 // mutations
@@ -62,20 +47,9 @@ const mutations = {
     state.object = object
   },
 
-  SET_DATA(state, data) {
-    state.data = data
+  DEL_OBJECT(state) {
+    state.object = null
   },
-
-  ADD_OBJECT(state, { data }) {
-    let list = [...state.data, data]
-    state.data = list
-    // Vue.set(state, data, [...data])
-  },
-
-  DEL_OBJECT(state, id) {
-    const index = state.data.findIndex(obj => obj.id == id)
-    state.data.splice(index, 1)
-  }
 }
 
 export default {
