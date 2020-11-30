@@ -18,18 +18,13 @@ before_script:
   - chmod 777 /app/front/start.sh
   - npm install  
 
-env:
-  global:
-    - REGISTRY_USER=${REGISTRY_USER}
-    - REGISTRY_PASS=${REGISTRY_PASS}
-
 jobs:
   include:
     - stage: build BackEnd
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REGISTRY_URL
       #- docker login -u $DOCKER_USERNAME --password-stdin $REGISTRY_URL
-      - docker build --file ./back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
+      - docker build --file /app/back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
       - docker push $REGISTRY_URL/grupoa-back
     - stage: test
       script:
@@ -41,7 +36,7 @@ jobs:
     - stage: build FrontEnd
       script:
       - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_URL
-      - docker build --file ./back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-front .
+      - docker build --file /app/front/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-front .
       - docker push $REGISTRY_URL/grupoa-front
     - stage: deploy FrontEnd
       script:
