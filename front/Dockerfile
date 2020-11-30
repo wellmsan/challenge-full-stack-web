@@ -3,19 +3,20 @@ FROM node:lts
 
 LABEL version="1.0.0" description="FRONT Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
-RUN mkdir /front
+RUN mkdir /app
+RUN mkdir /app/front
 
-WORKDIR /front
+WORKDIR /app/front
 
-COPY . /front
+COPY ./front /app/front
 
-COPY ./package.json /front/package.json
-COPY ./start.sh /front/start.sh
+COPY ./front/package.json /app/front/package.json
+COPY ./front/start.sh /app/front/start.sh
 
-RUN chmod 777 /front/start.sh;
-
-RUN cd /front; npm install; npm install -g serve;
+RUN cd /app/front; chmod 777 start.sh;
+RUN cd /app/front; npm install; 
+RUN cd /app/front; npm install; npm install -g serve;
 
 EXPOSE 5000 
 
-CMD ./start.sh
+CMD ./front/start.sh
