@@ -1,0 +1,45 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "stable"
+cache:
+  directories:
+    - "node_modules"
+
+before_script:
+  - cd ./back
+  - npm install    
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: test
+      if: branch = master
+      env:
+        - NODE_ENV=test
+      script:  
+      - npm run test
+    - stage: build BackEnd
+      if: branch = master
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REGISTRY_URL
+      - docker build --file ./back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
+      - docker push $REGISTRY_URL/grupoa-back
+    - stage: deploy BackEnd
+      if: branch = master
+      script:
+      - docker stack deploy -c ./back/docker-compose.yml grupo-a
+    - stage: build FrontEnd
+      if: branch = master
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REGISTRY_URL
+      - docker build --file ./front/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-front .
+      - docker push $REGISTRY_URL/grupoa-front
+    - stage: deploy FrontEnd
+      if: branch = master
+      script:
+      - docker stack deploy -c ./front/docker-compose.yml grupo-a

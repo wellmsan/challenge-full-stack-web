@@ -1,0 +1,27 @@
+version: "3.4"
+
+services:
+  grupoa-front:
+    image: $REGISTRY_URL/grupoa-front:latest
+    restart: always
+    networks:
+      - traefik-public
+    deploy:
+      update_config:
+        order: start-first
+      placement:
+        constraints:
+          - node.labels.worker == true  
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik-public"
+        - "traefik.http.routers.grupoa-front.rule=Host(`grupoa.well.eti.br`)"
+        - "traefik.http.routers.grupoa-front.entrypoints=web"
+        - "traefik.http.services.grupoa-front.loadbalancer.server.port=5000"
+    environment:
+      API_HOST: ${API_HOST}
+      PROJECT_NAME: ${PROJECT_NAME}
+
+networks:
+  traefik-public:
+    external: true    

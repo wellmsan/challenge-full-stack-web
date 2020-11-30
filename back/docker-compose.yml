@@ -1,0 +1,38 @@
+version: "3.4"
+
+services:
+  grupoa-back:
+    image: $REGISTRY_URL/grupoa-back:latest
+    restart: always
+    networks:
+      - traefik-public
+    deploy:
+      resources:
+          limits:
+            memory: ${LIMIT_MEM}
+      update_config:
+        order: start-first
+      placement:
+        constraints:
+          - node.labels.worker == true  
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik-public"
+        - "traefik.http.routers.grupoa-back.rule=Host(`app.well.eti.br`) && PathPrefix(`/grupoa`)"
+        - "traefik.http.routers.grupoa-back.entrypoints=web"
+        - "traefik.http.services.grupoa-back.loadbalancer.server.port=3000"
+    environment:
+      APP_NAME: ${APP_NAME}
+      NODE_ENV: ${NODE_ENV}
+      SECRET: ${SECRET}
+      BASE_PATH: ${BASE_PATH}
+      TZ: ${TZ}
+      DB_DIALECT: ${DB_DIALECT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATA: ${DB_DATA}
+      DB_HOST: ${DB_HOST}
+
+networks:
+  traefik-public:
+    external: true    

@@ -1,0 +1,81 @@
+{
+  "name": "desafio-back",
+  "version": "1.0.0",
+  "description": "API para o desafio do Grupo A",
+  "private": false,
+  "repository": "https://github.com/wellmsan/challenge-full-stack-web.git",
+  "author": "Welber Macedo <devopswell@gmail.com>",
+  "homepage": "https://github.com/wellmsan/challenge-full-stack-web.git",
+  "copyright": "Copyright 2020 Welber",
+  "license": "MIT",
+  "main": "dist/app.js",
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "nodemon src/app --exec \"node -r babel-register\" --ignore test",
+    "start:dev": "nodemon src/app --exec \"npm run lint && node -r babel-register\"",
+    "clean": "rimraf dist",
+    "build": "npm run clean && mkdir dist && babel src/ -s -d dist",
+    "test": "NODE_ENV=test mocha --exit --require babel-register test/",
+    "lint": "esw src",
+    "semantic-release": "semantic-release -e @semantic-release/gitlab -D"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "config": "^1.31.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "debug": "^2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "express-swagger-generator": "^1.1.17",
+    "express-validator": "^6.6.1",
+    "fs": "0.0.1-security",
+    "js-md5": "^0.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.2.5",
+    "node-cron": "^2.0.3",
+    "node-require-context": "^1.0.0",
+    "nodemon": "^2.0.4",
+    "rimraf": "^2.7.1",
+    "sequelize": "^5.22.3",
+    "sequelize-auto-migrations": "^1.0.3",
+    "sequelize-querystring": "^0.10.0",
+    "sqlite3": "^5.0.0",
+    "validatorjs": "^3.20.0"
+  },
+  "keywords": [
+    "desafio",
+    "backend",
+    "node",
+    "express",
+    "grupo",
+    "grupo a"
+  ],
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-mocha": "^4.12.1",
+    "eslint-watch": "^7.0.0",
+    "mocha": "^8.1.3",
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^3.4.2"
+  },
+  "release": {
+    "branch": "master",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/gitlab"
+    ]
+  }
+}
