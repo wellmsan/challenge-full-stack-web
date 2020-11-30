@@ -8,10 +8,10 @@ RUN mkdir /app/back
 
 WORKDIR /app/back
 
-COPY . /app/back
+COPY ./back /app/back
 
-COPY ./package.json /app/back/package.json
-COPY ./start.sh /app/back/start.sh
+COPY ./back/package.json /app/back/package.json
+COPY ./back/start.sh /app/back/start.sh
 
 RUN cd /app/back; chmod 777 start.sh;
 
