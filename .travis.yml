@@ -1,6 +1,6 @@
-language: node_js
-node_js:
-  - "12"
+#language: node_js
+#node_js:
+#  - "12"
 
 sudo: required
 
@@ -12,8 +12,7 @@ jobs:
     - stage: build BackEnd
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REGISTRY_URL
-      #- docker login -u $DOCKER_USERNAME --password-stdin $REGISTRY_URL
-      - docker build --file /app/back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
+      - docker build --file ./back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
       - docker push $REGISTRY_URL/grupoa-back
     - stage: test
       script:
