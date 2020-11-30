@@ -7,17 +7,6 @@ sudo: required
 services:
   - docker
 
-before_script:
-  - mkdir /app
-  - cp . /app
-  - cp ./back/package.json /app/back/package.json
-  - cp ./back/start.sh /app/back/start.sh
-  - chmod 777 /app/back/start.sh
-  - cp ./front/package.json /app/front/package.json
-  - cp ./front/start.sh /app/front/start.sh
-  - chmod 777 /app/front/start.sh
-  - npm install  
-
 jobs:
   include:
     - stage: build BackEnd
@@ -32,7 +21,7 @@ jobs:
       - npm run test
     - stage: deploy BackEnd
       script:
-      - docker stack deploy -c ./back/docker-compose.yml grupo-a
+      - docker stack deploy -c /app/back/docker-compose.yml grupo-a
     - stage: build FrontEnd
       script:
       - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_URL
@@ -40,4 +29,4 @@ jobs:
       - docker push $REGISTRY_URL/grupoa-front
     - stage: deploy FrontEnd
       script:
-      - docker stack deploy -c ./front/docker-compose.yml grupo-a
+      - docker stack deploy -c /app/front/docker-compose.yml grupo-a
