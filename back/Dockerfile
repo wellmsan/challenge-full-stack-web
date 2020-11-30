@@ -3,18 +3,18 @@ FROM node:lts
 
 LABEL version="1.0.0" description="API Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
-RUN mkdir /back
+RUN mkdir /app/back
 
-WORKDIR /back
+WORKDIR /app/back
 
-COPY . /back
+COPY . /app/back
 
-COPY ./package.json /back/package.json
-COPY ./start.sh /back/start.sh
+COPY ./package.json /app/back/package.json
+COPY ./start.sh /app/back/start.sh
 
-RUN cd /back; chmod 777 start.sh;
+RUN cd /app/back; chmod 777 start.sh;
 
-RUN cd /back; npm install; 
+RUN cd /app/back; npm install; 
 
 EXPOSE 3000 
 
