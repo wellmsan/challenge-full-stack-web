@@ -1,6 +1,6 @@
-#language: node_js
-#node_js:
-#  - "12"
+language: node_js
+node_js:
+  - "12"
 
 sudo: required
 
@@ -9,22 +9,23 @@ services:
 
 jobs:
   include:
+    - stage: test
+      script:
+      - npm install
+      - cd ./back
+      - npm run test
     - stage: build BackEnd
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REGISTRY_URL
       - docker build --file ./back/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-back .
       - docker push $REGISTRY_URL/grupoa-back
-    - stage: test
-      script:
-      - cd /back
-      - npm run test
     - stage: deploy BackEnd
       script:
       - docker stack deploy -c /app/back/docker-compose.yml grupo-a
     - stage: build FrontEnd
       script:
       - docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REGISTRY_URL
-      - docker build --file /app/front/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-front .
+      - docker build --file ./front/Dockerfile --no-cache -t $REGISTRY_URL/grupoa-front .
       - docker push $REGISTRY_URL/grupoa-front
     - stage: deploy FrontEnd
       script:

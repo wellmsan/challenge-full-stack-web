@@ -19,4 +19,4 @@ RUN cd /app/back; npm install;
 
 EXPOSE 3000 
 
-CMD ./start.sh
+CMD ./back/start.sh
