@@ -3,6 +3,7 @@ FROM node:lts
 
 LABEL version="1.0.0" description="API Desafio Grupo A" maintainer="Welber <devopswell@gmail.com>"
 
+RUN mkdir /app
 RUN mkdir /app/back
 
 WORKDIR /app/back
