@@ -55,7 +55,7 @@ NSERT INTO users (name, email, 'pass', created_at, updated_at)
 
 1. Configure o banco MySQL;
 2. Entre no diretório back `cd ./back`;
-3. Criar o arquivo `.env` com base no arquivo `.env-example`;
+3. Criar o arquivo `.env` com base no arquivo `.env.example`;
 4. Instale as dependencias `npm install`;
 5. Rode a aplicação com `npm run start`. O serviço responde em `http://localhost:3000/`
 6. No seu MySQL, exceute o script abaixo:
@@ -71,8 +71,8 @@ NSERT INTO users (name, email, pass, created_at, updated_at)
 3. Rode os testes com `npm run test`
 
 #### Frontend
-1. Entre no diretório back `cd ./front`;
-2. Criar o arquivo `.env` com base no arquivo `.env-example`;
+1. Entre no diretório front `cd ./front`;
+2. Criar o arquivo `.env` com base no arquivo `.env.example`;
 4. Instale as dependencias `npm install`;
 5. Rode a aplicação com `npm run serve`. O serviço responde em `http://localhost:8080/`
 
