@@ -8,6 +8,14 @@ services:
   - docker
 
 before_script:
+  - mkdir /app
+  - cp . /app
+  - cp ./back/package.json /app/back/package.json
+  - cp ./back/start.sh /app/back/start.sh
+  - chmod 777 /app/back/start.sh
+  - cp ./front/package.json /app/front/package.json
+  - cp ./front/start.sh /app/front/start.sh
+  - chmod 777 /app/front/start.sh
   - npm install  
 
 env:
