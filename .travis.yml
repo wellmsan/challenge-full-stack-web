@@ -13,6 +13,8 @@ jobs:
       script:
       - cd ./back
       - npm install
+      - npm install —-save-dev mocha
+      - npm audit fix      
       - npm run test
     - stage: build BackEnd
       script:
